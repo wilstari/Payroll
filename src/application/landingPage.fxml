@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LandingPageController">
+   <children>
+      <ButtonBar layoutX="159.0" layoutY="26.0" prefHeight="40.0" prefWidth="282.0">
+        <buttons>
+          <Button fx:id="employeesbtn" mnemonicParsing="false" onAction="#changeSceneEmployees" prefHeight="26.0" text="Employees" />
+            <Button mnemonicParsing="false" text="History" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="94.0" text="New Payroll" />
+        </buttons>
+      </ButtonBar>
+      <Button fx:id="settingsbtn" layoutX="250.0" layoutY="354.0" mnemonicParsing="false" onAction="#changeSceneSettings" prefHeight="31.0" prefWidth="100.0" text="Settings">
+         <graphic>
+            <ImageView fitHeight="23.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/pngfind.com-gear-icon-png-857091.png" />
+               </image></ImageView>
+         </graphic>
+      </Button>
+   </children>
+</AnchorPane>
