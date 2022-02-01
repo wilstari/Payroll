@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -25,38 +26,36 @@ import javafx.scene.control.cell.PropertyValueFactory;
 public class EmployeePageController implements Initializable {
 
 	
-	@FXML
-    private DatePicker  EndDate;
 
-    @FXML
-    private DatePicker HireDate;
-
-    @FXML
-    private DatePicker StartDate;
-    
     @FXML
     private Button addbtn;
-    
-    @FXML
-    private TableColumn<Employees, String> colEnd;
-    
-    @FXML
-    private TableColumn<Employees, String> colHire;
-    
-    @FXML
-    private TableColumn<Employees, String> colStart;
-	
-	@FXML
-	private TableView<Employees> tvEmployees;
-	
-    @FXML
-    private TableColumn<Employees, String> colFirstName;
 
     @FXML
-    private TableColumn<Employees, String> colLastName;
+    private TableColumn<Employees,Date> colEnd;
 
     @FXML
-    private TableColumn<Employees, Integer> colID;
+    private TableColumn<Employees,String> colFirstName;
+
+    @FXML
+    private TableColumn<Employees,Date> colHire;
+
+    @FXML
+    private TableColumn<Employees,Integer> colID;
+
+    @FXML
+    private TableColumn<Employees,String> colLastName;
+
+    @FXML
+    private TableColumn<Employees,Date> colStart;
+
+    @FXML
+    private DatePicker dpConEnd;
+
+    @FXML
+    private DatePicker dpConStart;
+
+    @FXML
+    private DatePicker dpHireDate;
 
     @FXML
     private TextField tfFirstName;
@@ -66,6 +65,9 @@ public class EmployeePageController implements Initializable {
 
     @FXML
     private TextField tfLastName;
+
+    @FXML
+    private TableView<Employees> tvEmployees;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -81,7 +83,7 @@ public class EmployeePageController implements Initializable {
 public Connection getConnection() {
 	Connection conn;
 	String user ="root";
-	String pwd="Wilsonman$123";
+	String pwd="Password123";
 	
 	try {
 		conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/payroll",user,pwd);
@@ -101,6 +103,7 @@ public ObservableList<Employees> getEmployeesList(){
 	Statement st;
 	ResultSet rs;
 	
+	
 	try {
 	st=conn.createStatement();
 	rs=st.executeQuery(query);
@@ -108,7 +111,7 @@ public ObservableList<Employees> getEmployeesList(){
 	
 	while(rs.next()){
 		employees = new Employees (rs.getInt("ID"),rs.getString("FirstName"),rs.getString("LastName"),
-				rs.getString("HireDate"), rs.getString("ContractStart"), rs.getString("ContractEnd"));
+				rs.getDate("HireDate"), rs.getDate("ContractStart"), rs.getDate("ContractEnd"));
 		employeesList.add(employees);
 	}
 	
@@ -125,15 +128,19 @@ public void showEmployees() {
 	colID.setCellValueFactory(new PropertyValueFactory<Employees,Integer>("id"));
 	colFirstName.setCellValueFactory(new PropertyValueFactory<Employees,String>("FirstName"));
 	colLastName.setCellValueFactory(new PropertyValueFactory<Employees,String>("LastName"));
-	colHire.setCellValueFactory(new PropertyValueFactory<Employees,String>("HireDate"));
-	colStart.setCellValueFactory(new PropertyValueFactory<Employees,String>("ContractStart"));
-	colStart.setCellValueFactory(new PropertyValueFactory<Employees,String>("ContractEnd"));
+	colHire.setCellValueFactory(new PropertyValueFactory<Employees,Date>("HireDate"));
+	colStart.setCellValueFactory(new PropertyValueFactory<Employees,Date>("ContractStart"));
+	colEnd.setCellValueFactory(new PropertyValueFactory<Employees,Date>("ContractEnd"));
 	tvEmployees.setItems(list);
 }
 
+
+
+
+
 private void insertEmployee() {
 	String query= "INSERT INTO employees VALUES("+tfID.getText()+",'"+tfFirstName.getText()+"','"+tfLastName.getText()+
-			"','"+EndDate.getPromptText()+"','" +HireDate.getPromptText()+"','" +HireDate.getPromptText()+"')";
+			"','"+dpHireDate.getValue()+"','" +dpConStart.getValue()+"','" +dpConEnd.getValue()+"')";
 	ExecuteInsert(query);
 	showEmployees();		
 }

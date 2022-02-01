@@ -1,16 +1,18 @@
 package application;
 
+import java.sql.Date;
+
 public class Employees {
 	 int id;
 	 String FirstName;
 	 String LastName;
-	 String HireDate;
-	 String ContractStart;
-	 String ContractEnd;
+	 Date HireDate;
+	 Date ContractStart;
+	 Date ContractEnd;
 	 
 	 
-	public Employees(int id, String firstName, String lastName, String hireDate, String contractStart,
-			String contractEnd) {
+	public Employees(int id, String firstName, String lastName, Date hireDate, Date contractStart,
+			Date contractEnd) {
 		super();
 		this.id = id;
 		FirstName = firstName;
@@ -51,32 +53,32 @@ public class Employees {
 	}
 
 
-	public String getHireDate() {
+	public Date getHireDate() {
 		return HireDate;
 	}
 
 
-	public void setHireDate(String hireDate) {
+	public void setHireDate(Date hireDate) {
 		HireDate = hireDate;
 	}
 
 
-	public String getContractStart() {
+	public Date getContractStart() {
 		return ContractStart;
 	}
 
 
-	public void setContractStart(String contractStart) {
+	public void setContractStart(Date contractStart) {
 		ContractStart = contractStart;
 	}
 
 
-	public String getContractEnd() {
+	public Date getContractEnd() {
 		return ContractEnd;
 	}
 
 
-	public void setContractEnd(String contractEnd) {
+	public void setContractEnd(Date contractEnd) {
 		ContractEnd = contractEnd;
 	}
 	
