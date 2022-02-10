@@ -117,6 +117,7 @@ public ObservableList<Employees> getEmployeesList(){
 	
 	
 	}catch(Exception ex) {
+		System.out.println(ex);
 		return null;
 	}
 	return employeesList;
@@ -124,13 +125,16 @@ public ObservableList<Employees> getEmployeesList(){
 
 
 public void showEmployees() {
+	
 	ObservableList<Employees> list = getEmployeesList();
+	
 	colID.setCellValueFactory(new PropertyValueFactory<Employees,Integer>("id"));
 	colFirstName.setCellValueFactory(new PropertyValueFactory<Employees,String>("FirstName"));
 	colLastName.setCellValueFactory(new PropertyValueFactory<Employees,String>("LastName"));
 	colHire.setCellValueFactory(new PropertyValueFactory<Employees,Date>("HireDate"));
 	colStart.setCellValueFactory(new PropertyValueFactory<Employees,Date>("ContractStart"));
 	colEnd.setCellValueFactory(new PropertyValueFactory<Employees,Date>("ContractEnd"));
+	
 	tvEmployees.setItems(list);
 }
 
