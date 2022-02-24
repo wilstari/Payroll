@@ -69,10 +69,13 @@ public class EmployeePageController implements Initializable {
     @FXML
     private TableView<Employees> tvEmployees;
 
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 	showEmployees();
 	}
+    
+    
     
     public void AddNewEmployee(ActionEvent event) throws IOException {
     	insertEmployee();

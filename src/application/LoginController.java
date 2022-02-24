@@ -16,6 +16,7 @@ import java.security.SecureRandom;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 
@@ -35,6 +36,9 @@ public class LoginController {
     @FXML
     private PasswordField passText;
     byte[]salt=  createSalt();
+    private String userNames=null;
+    private String userHashs=null; 
+    private String userSalts=null; 
 
     public Connection getConnection() {
     	Connection conn;
@@ -53,23 +57,18 @@ public class LoginController {
     }
 
     public void userLogin(ActionEvent event) throws IOException {
+    	//System.out.println("test:"+PasswordHashing("456",createSalt()));
+    	
     	checkLogin();
-
+    	
+    	
+    	 
     }
 
     private void checkLogin() throws IOException {
         Main m = new Main();
-        
-       
-        if(userText.getText().toString().equals("test") && passText.getText().toString().equals("123")) {
-        	errorlbl.setText("Success!");
-System.out.println(PasswordHashing("321", salt));
-System.out.println(Arrays.toString(salt));
-getpass();
-            m.changeScene("landingPage.fxml");
-        }
-
-        else if(userText.getText().isEmpty() && passText.getText().isEmpty()) {
+        errorlbl.setText("");
+        if(userText.getText().isBlank() || passText.getText().isBlank()) {
         	errorlbl.setText("Please enter your login details.");
         }
 
@@ -77,15 +76,28 @@ getpass();
         else {
         	errorlbl.setText("Wrong username or password!");
         }
+      
+     if(!userText.getText().isBlank() && !passText.getText().isBlank()) {
+    	 getUser();
+        if(userText.getText().toString().equals(userNames) && (PasswordHashing(passText.getText().toString(),userSalts.getBytes())).equals(userHashs)) {
+            m.changeScene("landingPage.fxml");
+        }
+     }
+        
+    
+        
+     }
+
         
         
-    }
+        
+    
     
    public static String PasswordHashing(String password, byte[]salt){
 	   try {
 		MessageDigest messageDigest= MessageDigest.getInstance("MD5");
 		messageDigest.update(password.getBytes());
-		messageDigest.reset();
+		
 		messageDigest.update(salt);
 		
 		byte[] resultByteArray= messageDigest.digest();
@@ -113,20 +125,22 @@ getpass();
 	  return bytes;
    }
    
-   public String getpass(){
+   public String getUser(){
 		
-		Connection conn = getConnection();
-		String query = "SELECT hash FROM userlogin WHERE id=1";
+	   Connection conn = getConnection();
+		String userHash = "SELECT hash FROM userlogin WHERE username='"+userText.getText()+"'";
+		String userSalt = "SELECT salt FROM userlogin WHERE username='"+userText.getText()+"'";
+		String userName = "SELECT username FROM userlogin WHERE username='"+userText.getText()+"'";
 		Statement st;
 		ResultSet rs;
-		String users=null;
+		 
 		
 		
 		try {
 		st=conn.createStatement();
-		rs=st.executeQuery(query);
+		rs=st.executeQuery(userHash);
 		if(rs.next()) {
-			users=rs.getString(1);
+			userHashs=rs.getString(1);
 		}
 	
 		
@@ -135,7 +149,41 @@ getpass();
 			System.out.println(ex);
 			return null;
 		}
-		System.out.println(users);		
+		try {
+			rs=st.executeQuery(userSalt);
+			if(rs.next()) {
+				userSalts=rs.getString(1);
+			}
+		
+			
+				
+			}catch(Exception ex) {
+				System.out.println(ex);
+				return null;
+			}
+		try {
+			rs=st.executeQuery(userName);
+			if(rs.next()) {
+				userNames=rs.getString(1);
+			}
+		
+			
+				
+			}catch(Exception ex) {
+				System.out.println(ex);
+				return null;
+			}
+		
+		System.out.println(userNames);
+		System.out.println(passText.getText().toString());
+		System.out.println(userSalts);	
+		System.out.println("entered:"+PasswordHashing(passText.getText().toString(),userSalts.getBytes()));
+		System.out.println("db:"+userHashs);
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return "";
 	} 
    

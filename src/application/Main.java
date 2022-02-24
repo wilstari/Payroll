@@ -20,8 +20,8 @@ public class Main extends Application {
 			Parent root = FXMLLoader.load(getClass().getResource("loginPage.fxml"));
 			primaryStage.setTitle("Login");
 			primaryStage.setScene(new Scene(root,600,400));
-			primaryStage.show();
-		}
+			primaryStage.show();		
+			primaryStage.setMaximized(true);}
 	
 	 public void changeScene(String fxml) throws IOException {
 	        Parent pane = FXMLLoader.load(getClass().getResource(fxml));
