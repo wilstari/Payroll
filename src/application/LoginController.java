@@ -5,10 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -18,14 +15,15 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
 
 
-public class LoginController {
 
-	public LoginController() {
 
-    }
+public class LoginController  {
+
+	
+	
+	
 
     @FXML
     private Button loginbtn;
@@ -39,7 +37,11 @@ public class LoginController {
     private String userNames=null;
     private String userHashs=null; 
     private String userSalts=null; 
-
+    private static String userRoles=null;
+    
+   
+    
+    
     public Connection getConnection() {
     	Connection conn;
     	String user ="root";
@@ -57,12 +59,7 @@ public class LoginController {
     }
 
     public void userLogin(ActionEvent event) throws IOException {
-    	//System.out.println("test:"+PasswordHashing("456",createSalt()));
-    	
-    	checkLogin();
-    	
-    	
-    	 
+    	checkLogin();	 
     }
 
     private void checkLogin() throws IOException {
@@ -80,12 +77,9 @@ public class LoginController {
      if(!userText.getText().isBlank() && !passText.getText().isBlank()) {
     	 getUser();
         if(userText.getText().toString().equals(userNames) && (PasswordHashing(passText.getText().toString(),userSalts.getBytes())).equals(userHashs)) {
-            m.changeScene("landingPage.fxml");
+            m.changeScene("landingPage.fxml","Landing");
         }
-     }
-        
-    
-        
+      }    
      }
 
         
@@ -125,12 +119,18 @@ public class LoginController {
 	  return bytes;
    }
    
+   public static String getRole() {   
+	return userRoles;
+	   
+   }
+   
    public String getUser(){
 		
 	   Connection conn = getConnection();
 		String userHash = "SELECT hash FROM userlogin WHERE username='"+userText.getText()+"'";
 		String userSalt = "SELECT salt FROM userlogin WHERE username='"+userText.getText()+"'";
 		String userName = "SELECT username FROM userlogin WHERE username='"+userText.getText()+"'";
+		String userRole="SELECT role FROM userlogin WHERE username='"+userText.getText()+"'";
 		Statement st;
 		ResultSet rs;
 		 
@@ -165,6 +165,19 @@ public class LoginController {
 			rs=st.executeQuery(userName);
 			if(rs.next()) {
 				userNames=rs.getString(1);
+			}
+		
+			
+				
+			}catch(Exception ex) {
+				System.out.println(ex);
+				return null;
+			}
+		
+		try {
+			rs=st.executeQuery(userRole);
+			if(rs.next()) {
+				userRoles=rs.getString(1);
 			}
 		
 			

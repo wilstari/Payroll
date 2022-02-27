@@ -14,6 +14,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
@@ -146,13 +148,22 @@ public void showEmployees() {
 
 
 private void insertEmployee() {
-	String query= "INSERT INTO employees VALUES("+tfID.getText()+",'"+tfFirstName.getText()+"','"+tfLastName.getText()+
+	String query= "INSERT INTO employees("
+			
+			+ "`firstName`,"
+			+ "`lastName`,"
+			+ "`hireDate`,"
+			+ "`contractStart`,"
+			+ "`contractEnd`)"
+			+ " VALUES('"+tfFirstName.getText()+"','"+tfLastName.getText()+
 			"','"+dpHireDate.getValue()+"','" +dpConStart.getValue()+"','" +dpConEnd.getValue()+"')";
-	ExecuteInsert(query);
-	showEmployees();		
+	executeInsert(query);
+	showEmployees();
+	clearFields();
+	showAlert("New Employee Added","Added");
 }
 
-private void ExecuteInsert(String query) {
+private void executeInsert(String query) {
 	Connection conn= getConnection();
 	Statement st;
 	
@@ -162,9 +173,23 @@ private void ExecuteInsert(String query) {
 	}catch(Exception ex) {
 		ex.printStackTrace();
 	}
-	
-	
-	
-	
+  }
+
+private void clearFields() {
+	tfFirstName.clear();
+	tfID.clear();
+	tfLastName.clear();
+	dpConEnd.getEditor().clear();
+	dpHireDate.getEditor().clear();
+	dpConStart.getEditor().clear();
 }
+
+private void showAlert(String msg,String title) {
+	Alert alert = new Alert(AlertType.INFORMATION);
+	alert.setTitle(title);
+	alert.setHeaderText(null);
+	alert.setContentText(msg);
+	alert.showAndWait();
+}
+
 }

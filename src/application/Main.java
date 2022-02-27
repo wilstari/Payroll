@@ -23,12 +23,15 @@ public class Main extends Application {
 			primaryStage.show();		
 			primaryStage.setMaximized(true);}
 	
-	 public void changeScene(String fxml) throws IOException {
+	 public void changeScene(String fxml,String title) throws IOException {
 	        Parent pane = FXMLLoader.load(getClass().getResource(fxml));
 	        stg.getScene().setRoot(pane);
+	        stg.setTitle(title);
 	    }
 	 
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	
 }

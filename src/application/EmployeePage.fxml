@@ -108,7 +108,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Button fx:id="addbtn" mnemonicParsing="false" prefHeight="26.0" prefWidth="90.0" text="Add">
+                        <Button fx:id="addbtn" mnemonicParsing="false" onAction="#AddNewEmployee" prefHeight="26.0" prefWidth="90.0" text="Add">
                            <GridPane.margin>
                               <Insets left="5.0" right="5.0" />
                            </GridPane.margin>
